@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import {
   Locale,
@@ -22,10 +21,11 @@ export function HomePage({ locale }: { locale: Locale }) {
   const t = ui[locale];
   return (
     <div>
-      <section className="relative overflow-hidden">
+      <section className="relative overflow-hidden bg-maroon-dark">
         <div className="absolute inset-0">
-          <Image src="/images/hero.jpg" alt="" fill priority className="object-cover" sizes="100vw" />
-          <div className="absolute inset-0 bg-gradient-to-r from-maroon-dark/90 via-maroon-dark/75 to-maroon-dark/40" />
+          <div className="absolute inset-0 bg-gradient-to-br from-maroon-dark via-maroon to-maroon-dark" />
+          <div className="absolute -right-24 -top-24 w-[32rem] h-[32rem] rounded-full bg-gold/10 blur-3xl" />
+          <div className="absolute right-10 bottom-0 w-[24rem] h-[24rem] rounded-full bg-gold/10 blur-3xl" />
         </div>
         <div className="relative container-page py-20 sm:py-28 lg:py-36 max-w-2xl">
           <p className="text-gold-light text-xs sm:text-sm font-semibold tracking-[0.2em] uppercase mb-4">{c.kicker}</p>
