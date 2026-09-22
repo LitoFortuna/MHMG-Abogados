@@ -30,7 +30,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     url: siteUrl,
     email: offices.email,
     sameAs: ["https://www.facebook.com/mhmg.abogados"],
-    logo: `${siteUrl}/images/mark.png`,
+    logo: `${siteUrl}/icon.png`,
     openingHoursSpecification: {
       "@type": "OpeningHoursSpecification",
       dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],

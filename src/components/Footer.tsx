@@ -1,7 +1,7 @@
-import Image from "next/image";
 import Link from "next/link";
 import { Locale, nav, offices, practiceAreas, siteName, ui } from "@/lib/content";
 import { homePath, slugPath, staticPath } from "@/lib/paths";
+import Mark from "./Mark";
 
 export default function Footer({ locale }: { locale: Locale }) {
   const t = ui[locale];
@@ -12,7 +12,7 @@ export default function Footer({ locale }: { locale: Locale }) {
       <div className="container-page py-14 grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
         <div>
           <Link href={homePath(locale)} className="flex items-center gap-2 mb-4">
-            <Image src="/images/mark.png" alt={siteName} width={36} height={36} className="h-9 w-9 object-contain" />
+            <Mark className="h-9 w-9 shrink-0" />
             <span className="font-serif text-lg text-cream">MH & MG</span>
           </Link>
           <ul className="space-y-1.5 text-sm text-cream/75">

@@ -1,10 +1,10 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { Locale, localeLabel, locales, nav, practiceAreas } from "@/lib/content";
 import { homePath, slugPath, staticPath } from "@/lib/paths";
+import Mark from "./Mark";
 
 export default function Header({
   locale,
@@ -21,7 +21,7 @@ export default function Header({
     <header className="sticky top-0 z-50 bg-cream/95 backdrop-blur border-b border-maroon/10">
       <div className="container-page flex items-center justify-between h-16">
         <Link href={homePath(locale)} className="flex items-center gap-2 shrink-0" onClick={() => setOpen(false)}>
-          <Image src="/images/mark.png" alt={`Logotipo de ${"MH & MG Abogados"}`} width={40} height={40} className="h-10 w-10 object-contain" priority />
+          <Mark className="h-10 w-10 shrink-0" />
           <span className="font-serif text-lg sm:text-xl text-maroon leading-tight">MH & MG</span>
         </Link>
 
