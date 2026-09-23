@@ -13,17 +13,21 @@ export default function Image() {
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
-          padding: "80px",
-          background: "linear-gradient(135deg, #4a0e19 0%, #6f1626 100%)",
-          color: "#faf6ee",
+          padding: "88px",
+          background: "#0B2622",
+          color: "#F1ECDF",
         }}
       >
-        <div style={{ width: 64, height: 6, background: "#c9a13b", marginBottom: 32 }} />
-        <div style={{ fontSize: 72, fontWeight: 700, letterSpacing: -1 }}>MH & MG Abogados</div>
-        <div style={{ fontSize: 32, marginTop: 20, color: "#e6c874", maxWidth: 820 }}>
+        <div style={{ display: "flex", fontSize: 20, letterSpacing: 3, color: "#D9B583", marginBottom: 28 }}>
+          41.3874°N BARCELONA — 42.2624°N ROSES
+        </div>
+        <div style={{ display: "flex", fontSize: 68, fontWeight: 600, letterSpacing: -1, maxWidth: 980 }}>
           Especialistas en tu derecho, con más de 25 años a tu lado
         </div>
-        <div style={{ fontSize: 24, marginTop: 40, color: "rgba(250,246,238,0.75)" }}>Barcelona · Roses (Girona)</div>
+        <div style={{ display: "flex", width: 1024, height: 1, background: "#AD8248", marginTop: 40 }} />
+        <div style={{ display: "flex", fontSize: 26, marginTop: 32, color: "rgba(241,236,223,0.72)" }}>
+          MH &amp; MG Abogados
+        </div>
       </div>
     ),
     { ...size }

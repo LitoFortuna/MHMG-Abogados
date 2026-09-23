@@ -1,17 +1,18 @@
 export default function Mark({ className = "h-10 w-10" }: { className?: string }) {
   return (
     <svg viewBox="0 0 64 64" className={className} role="img" aria-label="MH & MG Abogados">
-      <rect x="1" y="1" width="62" height="62" rx="14" fill="#C9A13B" />
-      <rect x="1" y="1" width="62" height="62" rx="14" fill="none" stroke="#6F1626" strokeWidth="1.5" />
-      <g stroke="#6F1626" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" fill="none">
-        <line x1="32" y1="14" x2="32" y2="46" />
-        <line x1="18" y1="22" x2="46" y2="22" />
-        <path d="M18 22 L12 32 A6.5 6.5 0 0 0 24 32 Z" />
-        <path d="M46 22 L40 32 A6.5 6.5 0 0 0 52 32 Z" />
-        <line x1="24" y1="50" x2="40" y2="50" />
-        <line x1="32" y1="46" x2="32" y2="50" />
+      <rect x="1" y="1" width="62" height="62" rx="12" fill="#0B2622" />
+      <rect x="1" y="1" width="62" height="62" rx="12" fill="none" stroke="#AD8248" strokeWidth="1" strokeOpacity="0.5" />
+      <g stroke="#D9B583" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" fill="none">
+        <line x1="32" y1="12" x2="32" y2="36" />
+        <line x1="16" y1="36" x2="48" y2="36" />
+        <path d="M32 15 L18 36" />
+        <path d="M32 15 L46 36" />
       </g>
-      <circle cx="32" cy="14" r="2.6" fill="#6F1626" />
+      <circle cx="18" cy="36" r="3" fill="#0B2622" stroke="#D9B583" strokeWidth="1.6" />
+      <circle cx="46" cy="36" r="3" fill="#0B2622" stroke="#D9B583" strokeWidth="1.6" />
+      <circle cx="32" cy="12" r="1.7" fill="#D9B583" />
+      <line x1="12" y1="46" x2="52" y2="46" stroke="#AD8248" strokeWidth="1" strokeLinecap="round" />
     </svg>
   );
 }

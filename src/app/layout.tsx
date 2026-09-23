@@ -1,19 +1,27 @@
 import type { Metadata } from "next";
-import { Cormorant_SC, Poppins } from "next/font/google";
+import { Fraunces, IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 import { offices, siteName } from "@/lib/content";
 import { siteUrl } from "@/lib/paths";
 
-const cormorant = Cormorant_SC({
-  variable: "--font-cormorant",
+const fraunces = Fraunces({
+  variable: "--font-display",
   subsets: ["latin"],
-  weight: ["500", "600", "700"],
+  weight: "variable",
+  style: ["normal", "italic"],
+  axes: ["opsz", "SOFT"],
 });
 
-const poppins = Poppins({
+const plexSans = IBM_Plex_Sans({
   variable: "--font-body",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
+});
+
+const plexMono = IBM_Plex_Mono({
+  variable: "--font-utility",
+  subsets: ["latin"],
+  weight: ["400", "500"],
 });
 
 export const metadata: Metadata = {
@@ -67,7 +75,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
   return (
     <html lang="es">
-      <body className={`${cormorant.variable} ${poppins.variable} antialiased font-sans bg-cream text-ink`}>
+      <body className={`${fraunces.variable} ${plexSans.variable} ${plexMono.variable} antialiased font-sans bg-paper text-ink`}>
         {children}
         <script
           type="application/ld+json"
