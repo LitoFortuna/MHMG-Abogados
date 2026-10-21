@@ -133,7 +133,7 @@ function ContactSection({ locale, withHeading = true }: { locale: Locale; withHe
   const c = home[locale];
   const i = inner[locale];
   return (
-    <section className="contact" id="cita" aria-labelledby="cita-h">
+    <section className="contact chapter chapter--1 on-dark" data-ink="dark" id="cita" aria-labelledby="cita-h">
       <div className="wrap grid">
         {withHeading ? (
           <Lines as="h2" id="cita-h" className="contact__head head" lines={[c.contactHeading]} reveal />
@@ -240,7 +240,7 @@ export function HomePage({ locale }: { locale: Locale }) {
         </div>
       </section>
 
-      <section aria-labelledby="intro-h">
+      <section className="chapter chapter--1 on-dark" data-ink="dark" aria-labelledby="intro-h">
         <div className="board">
           <div className="board__slogan on-dark" data-ink="dark" data-reveal="open">
             <Lines as="h2" id="intro-h" className="display" lines={c.introSlogan} reveal />
@@ -258,7 +258,7 @@ export function HomePage({ locale }: { locale: Locale }) {
         </div>
       </section>
 
-      <section className="areas" aria-labelledby="areas-h">
+      <section className="areas chapter chapter--3 on-dark" data-ink="dark" aria-labelledby="areas-h">
         <div className="wrap">
           <Lines as="h2" id="areas-h" className="areas__head" lines={c.listHeading} reveal />
           <div className="grid areas__body">
@@ -270,7 +270,7 @@ export function HomePage({ locale }: { locale: Locale }) {
         </div>
       </section>
 
-      <section className="steps on-dark" data-ink="dark" aria-labelledby="steps-h">
+      <section className="steps" aria-labelledby="steps-h">
         <div className="wrap">
           <ol className="steps__list">
             {c.stepsLines.map((line, i) => (
@@ -291,7 +291,8 @@ export function HomePage({ locale }: { locale: Locale }) {
         </div>
       </section>
 
-      <section className="about wrap grid" aria-labelledby="about-h">
+      <section className="chapter chapter--4 on-dark" data-ink="dark" aria-labelledby="about-h">
+        <div className="about wrap grid">
         <h2 id="about-h" className="sr-only">
           {n.firma}
         </h2>
@@ -323,6 +324,7 @@ export function HomePage({ locale }: { locale: Locale }) {
             {c.aboutNewsLink}
           </Link>
         </p>
+        </div>
       </section>
 
       <section className="faq" aria-labelledby="faq-h">
@@ -387,7 +389,7 @@ function CtaBand({ locale }: { locale: Locale }) {
 export function PracticeAreaPage({ locale, area }: { locale: Locale; area: PracticeArea }) {
   const i = inner[locale];
   const idx = practiceAreas.findIndex((a) => a.group === area.group);
-  const tone = ((idx % 4) + 1) as 1 | 2 | 3 | 4;
+  const tone = ([1, 3, 4] as const)[idx % 3];
   const [first, ...rest] = area.intro[locale];
 
   return (
@@ -534,7 +536,7 @@ export function ActualidadPage({ locale }: { locale: Locale }) {
   const i = inner[locale];
   return (
     <>
-      <PageHero title={i.newsTitle} tone={2} sub={i.newsNote} />
+      <PageHero title={i.newsTitle} tone={1} sub={i.newsNote} />
       <div className="wrap grid page-body">
         <div className="side-nav" />
         <div className="page-main">

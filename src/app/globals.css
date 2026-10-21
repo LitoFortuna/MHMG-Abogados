@@ -1,10 +1,10 @@
 @import "tailwindcss";
 
 :root {
-  --bg: #ffffff;
-  --surface: #f0f1f1;
+  --bg: #e4e1da;
+  --surface: #d6d1c6;
   --ink: #0b0f14;
-  --muted: #565d66;
+  --muted: #4a515a;
   --accent: #1738c4;
   --accent-ink: #ffffff;
   --accent-strong: #0f2a96;
@@ -268,7 +268,7 @@ main {
   position: sticky;
   top: 0;
   z-index: 40;
-  background: var(--surface);
+  background: var(--bg);
   height: var(--header-h);
 }
 
@@ -440,7 +440,7 @@ main {
 /* ---------- hero ---------- */
 
 .hero {
-  background: var(--surface);
+  background: var(--bg);
   position: relative;
   overflow: clip;
   view-timeline-name: --hero;
@@ -882,8 +882,6 @@ main {
 /* ---------- steps ---------- */
 
 .steps {
-  background: var(--field-4);
-  color: var(--field-4-ink);
   padding-block: clamp(96px, 13vw, 200px);
 }
 
@@ -914,13 +912,13 @@ main {
 }
 
 .step:last-child .step__line {
-  color: var(--field-2);
+  color: var(--accent);
 }
 
 .step__text {
   max-width: 34ch;
   font-size: var(--step-body);
-  color: rgba(255, 255, 255, 0.78);
+  color: #2b323a;
 }
 
 @media (min-width: 1000px) {
@@ -1142,7 +1140,8 @@ main {
 .tool {
   grid-column: 1 / -1;
   margin-top: 40px;
-  background: var(--surface);
+  background: var(--bg);
+  color: var(--ink);
   padding: clamp(20px, 3vw, 40px);
   display: grid;
   gap: 28px;
@@ -1831,7 +1830,7 @@ main {
     position: absolute;
     inset: 0;
     z-index: 2;
-    background: var(--bg);
+    background: var(--ground, var(--bg));
     transform-origin: 50% 0;
     transition: transform 1100ms var(--ease-in-out);
     transition-delay: calc(var(--i, 0) * 120ms);
@@ -1964,4 +1963,50 @@ main {
     grid-column: 3;
     grid-row: 1;
   }
+}
+
+/* ---------- chapters: whole sections in one flat colour ---------- */
+
+.chapter {
+  background: var(--ground);
+  color: var(--ground-ink);
+}
+
+.chapter--1 {
+  --ground: var(--field-1);
+  --ground-ink: var(--field-1-ink);
+}
+
+.chapter--3 {
+  --ground: var(--field-3);
+  --ground-ink: var(--field-3-ink);
+}
+
+.chapter--4 {
+  --ground: var(--field-4);
+  --ground-ink: var(--field-4-ink);
+}
+
+.chapter--3 .areas__label,
+.chapter--3 .area-row__blurb,
+.chapter--4 .about__facts dt,
+.chapter--4 .about__newshead,
+.chapter--4 .news-row time {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.chapter--3 .area-row:hover {
+  color: var(--field-2);
+}
+
+.chapter--4 .link:hover {
+  color: var(--field-2);
+}
+
+.chapter .tool :focus-visible {
+  outline-color: var(--accent);
+}
+
+.chapter--1 .link {
+  text-decoration-color: currentColor;
 }
