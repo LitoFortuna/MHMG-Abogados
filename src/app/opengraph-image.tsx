@@ -2,6 +2,7 @@ import { ImageResponse } from "next/og";
 
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
+export const alt = "MH & MG Abogados, especialistas en tu derecho en Barcelona y Roses";
 
 export default function Image() {
   return new ImageResponse(
@@ -12,22 +13,18 @@ export default function Image() {
           height: "100%",
           display: "flex",
           flexDirection: "column",
-          justifyContent: "center",
-          padding: "88px",
-          background: "#0B2622",
-          color: "#F1ECDF",
+          justifyContent: "space-between",
+          padding: "72px",
+          background: "#1738c4",
+          color: "#ffffff",
         }}
       >
-        <div style={{ display: "flex", fontSize: 20, letterSpacing: 3, color: "#D9B583", marginBottom: 28 }}>
-          41.3874°N BARCELONA — 42.2624°N ROSES
+        <div style={{ display: "flex", fontSize: 38, fontWeight: 600, letterSpacing: -1 }}>MH &amp; MG Abogados</div>
+        <div style={{ display: "flex", flexDirection: "column", fontSize: 148, fontWeight: 600, letterSpacing: -7, lineHeight: 0.92 }}>
+          <div style={{ display: "flex" }}>Especialistas</div>
+          <div style={{ display: "flex" }}>en tu derecho</div>
         </div>
-        <div style={{ display: "flex", fontSize: 68, fontWeight: 600, letterSpacing: -1, maxWidth: 980 }}>
-          Especialistas en tu derecho, con más de 25 años a tu lado
-        </div>
-        <div style={{ display: "flex", width: 1024, height: 1, background: "#AD8248", marginTop: 40 }} />
-        <div style={{ display: "flex", fontSize: 26, marginTop: 32, color: "rgba(241,236,223,0.72)" }}>
-          MH &amp; MG Abogados
-        </div>
+        <div style={{ display: "flex", fontSize: 36, color: "#dcd6cb" }}>Barcelona y Roses</div>
       </div>
     ),
     { ...size }

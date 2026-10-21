@@ -17,7 +17,7 @@ export function generateMetadata(): Metadata {
 
 export default function Page() {
   return (
-    <Shell locale="es" alt={homeAltLinks()}>
+    <Shell locale="es" alt={homeAltLinks()} home>
       <HomePage locale="es" />
     </Shell>
   );

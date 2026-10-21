@@ -1,32 +1,22 @@
-import type { Metadata } from "next";
-import { Fraunces, IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import { Hanken_Grotesk } from "next/font/google";
 import "./globals.css";
 import { offices, siteName } from "@/lib/content";
 import { siteUrl } from "@/lib/paths";
 
-const fraunces = Fraunces({
-  variable: "--font-display",
+const hanken = Hanken_Grotesk({
+  variable: "--font-hanken",
   subsets: ["latin"],
-  weight: "variable",
-  style: ["normal", "italic"],
-  axes: ["opsz", "SOFT"],
-});
-
-const plexSans = IBM_Plex_Sans({
-  variable: "--font-body",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-});
-
-const plexMono = IBM_Plex_Mono({
-  variable: "--font-utility",
-  subsets: ["latin"],
-  weight: ["400", "500"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: { default: siteName, template: `%s | ${siteName}` },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#1738c4",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -37,18 +27,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     name: siteName,
     url: siteUrl,
     email: offices.email,
+    foundingDate: "2001",
     sameAs: ["https://www.facebook.com/mhmg.abogados"],
-    logo: `${siteUrl}/icon.png`,
-    openingHoursSpecification: {
-      "@type": "OpeningHoursSpecification",
-      dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-      opens: "09:30",
-      closes: "20:00",
-    },
+    logo: `${siteUrl}/icon`,
+    image: `${siteUrl}/opengraph-image`,
+    knowsLanguage: ["es", "ca", "en", "nl", "de"],
     department: [
       {
         "@type": "LegalService",
-        name: `${siteName} — Barcelona`,
+        name: `${siteName} · Barcelona`,
         telephone: offices.barcelona.phone,
         address: {
           "@type": "PostalAddress",
@@ -60,7 +47,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       },
       {
         "@type": "LegalService",
-        name: `${siteName} — Roses (Girona)`,
+        name: `${siteName} · Roses (Girona)`,
         telephone: offices.roses.phone,
         address: {
           "@type": "PostalAddress",
@@ -74,13 +61,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   };
 
   return (
-    <html lang="es">
-      <body className={`${fraunces.variable} ${plexSans.variable} ${plexMono.variable} antialiased font-sans bg-paper text-ink`}>
+    <html lang="es" className={hanken.variable} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('js')" }} />
+      </head>
+      <body>
         {children}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       </body>
     </html>
   );

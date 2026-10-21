@@ -1,313 +1,594 @@
+import Image from "next/image";
 import Link from "next/link";
+import type { CSSProperties } from "react";
 import {
   Locale,
   PracticeArea,
   blogPosts,
   contactPage,
-  firmPage,
   homeCopy,
+  firmPage,
+  nav,
   offices,
   practiceAreas,
   staticSlugs,
   ui,
 } from "@/lib/content";
+import {
+  type PhotoKey,
+  areaGroups,
+  areaH1,
+  areaMeta,
+  comunidadesServices,
+  home,
+  inner,
+  photoAlt,
+  photoStrips,
+  photos,
+} from "@/lib/copy";
 import { slugPath, staticPath } from "@/lib/paths";
-import PageBanner from "./PageBanner";
-import ContactForm from "./ContactForm";
-import PracticeGrid from "./PracticeGrid";
+import ContactTool, { ToolOffice, ToolTopic } from "./ContactTool";
+import Lines from "./Lines";
 
-export function HomePage({ locale }: { locale: Locale }) {
-  const c = homeCopy[locale];
-  const t = ui[locale];
+const dateLocale = { es: "es-ES", ca: "ca-ES", en: "en-GB" } as const;
+
+const css = (vars: Record<string, string | number>) => vars as unknown as CSSProperties;
+
+function Photo({
+  name,
+  locale,
+  sizes,
+  preload = false,
+}: {
+  name: PhotoKey;
+  locale: Locale;
+  sizes: string;
+  preload?: boolean;
+}) {
+  const p = photos[name];
   return (
-    <div>
-      <section className="relative overflow-hidden bg-sea-deep">
-        <div className="relative container-page pt-20 pb-24 sm:pt-28 sm:pb-32 lg:pt-36 lg:pb-40 max-w-2xl">
-          <p className="font-mono text-brass-light text-xs sm:text-sm tracking-[0.2em] uppercase mb-5">{c.kicker}</p>
-          <h1 className="font-serif font-medium text-4xl sm:text-5xl lg:text-[3.4rem] text-paper leading-[1.1] mb-6">{c.h1}</h1>
-          <p className="text-paper/80 text-base sm:text-lg mb-9 max-w-xl">{c.sub}</p>
-          <div className="flex flex-wrap gap-4">
-            <Link href={staticPath(locale, "contacto")} className="inline-flex items-center rounded-sm bg-brass px-7 py-3.5 text-sm font-semibold text-sea-deep hover:bg-brass-light transition-colors">
-              {c.ctaPrimary}
-            </Link>
-            <Link href={staticPath(locale, "servicios")} className="inline-flex items-center rounded-sm border border-paper/30 px-7 py-3.5 text-sm font-semibold text-paper hover:bg-paper/10 transition-colors">
-              {c.ctaSecondary}
-            </Link>
-          </div>
-        </div>
-        <div className="horizon-rule" />
-      </section>
+    <Image
+      src={p.src}
+      width={p.width}
+      height={p.height}
+      alt={photoAlt[name][locale]}
+      sizes={sizes}
+      preload={preload}
+    />
+  );
+}
 
-      <section className="bg-linen">
-        <div className="container-page py-8 grid grid-cols-2 sm:grid-cols-4 divide-x divide-sea/10 text-center">
-          <Stat value="25+" label={locale === "es" ? "años de experiencia" : locale === "ca" ? "anys d'experiència" : "years of experience"} />
-          <Stat value="2" label={t.offices2} />
-          <Stat value="5" label={t.languages5} />
-          <Stat value="✓" label={t.mediators} />
-        </div>
-      </section>
+function Arrow() {
+  return (
+    <svg className="area-row__arrow" viewBox="0 0 18 18" aria-hidden="true" focusable="false">
+      <path d="M2 9h13M10 3l6 6-6 6" fill="none" stroke="currentColor" strokeWidth="2" />
+    </svg>
+  );
+}
 
-      <section className="container-page py-16 sm:py-20 grid lg:grid-cols-2 gap-12 items-start">
-        <div>
-          <h2 className="font-serif text-3xl sm:text-4xl text-sea mb-5">{c.firmTitle}</h2>
-          <p className="text-ink/80 leading-relaxed mb-6">{c.firmText}</p>
-          <Link href={staticPath(locale, "firma")} className="inline-flex items-center rounded-sm border border-sea px-6 py-3 text-sm font-semibold text-sea hover:bg-sea hover:text-paper transition-colors">
-            {c.firmCta}
-          </Link>
+function PhotoStrip({ locale, set }: { locale: Locale; set: number }) {
+  return (
+    <div className="strip">
+      {photoStrips[set % photoStrips.length].map((name, i) => (
+        <div className="strip__tile" key={name} data-reveal="open" style={css({ "--i": i })}>
+          <Photo name={name} locale={locale} sizes="(min-width: 1000px) 25vw, 50vw" />
         </div>
-        <div>
-          <h3 className="font-serif text-2xl text-sea mb-6">{c.howWeWork}</h3>
-          <div className="space-y-5">
-            {c.steps.map((s, i) => (
-              <div key={s.title} className="flex gap-4">
-                <span className="flex items-center justify-center w-9 h-9 rounded-full bg-brass/15 text-sea font-mono text-sm font-medium shrink-0">{String(i + 1).padStart(2, "0")}</span>
-                <div>
-                  <h4 className="font-semibold text-ink mb-1">{s.title}</h4>
-                  <p className="text-sm text-ink/70 leading-relaxed">{s.text}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="bg-linen border-y border-sea/10">
-        <div className="container-page py-16 sm:py-20">
-          <h2 className="font-serif text-3xl sm:text-4xl text-sea mb-3">{c.areasTitle}</h2>
-          <p className="text-ink/70 mb-10 max-w-2xl">{c.areasSub}</p>
-          <PracticeGrid locale={locale} />
-        </div>
-      </section>
-
-      <section className="container-page py-16 sm:py-20 grid lg:grid-cols-[1.1fr_1fr] gap-12 items-center">
-        <div>
-          <h2 className="font-serif text-3xl sm:text-4xl text-sea mb-5">{c.appointmentTitle}</h2>
-          <p className="text-ink/80 leading-relaxed mb-6">{c.appointmentText}</p>
-          <div className="space-y-2 text-sm text-ink/75 font-mono">
-            <p>Barcelona · {offices.barcelona.phoneDisplay} · {offices.barcelona.address}</p>
-            <p>Roses (Girona) · {offices.roses.phoneDisplay} · {offices.roses.address}</p>
-          </div>
-        </div>
-        <ContactForm locale={locale} />
-      </section>
+      ))}
     </div>
   );
 }
 
-function Stat({ value, label }: { value: string; label: string }) {
+function servicesOf(area: PracticeArea, locale: Locale) {
+  return area.group === "comunidades" ? comunidadesServices[locale] : area.services[locale];
+}
+
+function topicsFor(locale: Locale): ToolTopic[] {
+  return areaGroups.flat().map((group) => {
+    const area = practiceAreas.find((a) => a.group === group)!;
+    return { id: group, label: areaMeta[group][locale].short, services: servicesOf(area, locale) };
+  });
+}
+
+function toToolOffice(o: (typeof offices)["barcelona"]): ToolOffice {
+  return {
+    name: o.name,
+    address: o.address,
+    postalCode: o.postalCode,
+    city: o.city,
+    phone: o.phone,
+    phoneDisplay: o.phoneDisplay,
+  };
+}
+
+function AreasTable({ locale, groups }: { locale: Locale; groups: string[] }) {
+  let n = 0;
   return (
-    <div>
-      <div className="font-serif text-2xl sm:text-3xl text-sea">{value}</div>
-      <div className="text-xs sm:text-sm text-ink/60 mt-1">{label}</div>
+    <div className="areas__table">
+      {areaGroups.map((group, gi) => (
+        <div className="areas__group" key={gi}>
+          <p className="areas__label">{groups[gi]}</p>
+          <ul className="areas__rows">
+            {group.map((g) => {
+              const area = practiceAreas.find((a) => a.group === g)!;
+              const m = areaMeta[g][locale];
+              const i = n++ % 6;
+              return (
+                <li key={g} data-reveal="row" style={css({ "--i": i })}>
+                  <Link className="area-row" href={slugPath(locale, area.slug[locale])}>
+                    <span className="area-row__name">{m.short}</span>
+                    <span className="area-row__blurb">{m.blurb}</span>
+                    <Arrow />
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      ))}
     </div>
+  );
+}
+
+function ContactSection({ locale, withHeading = true }: { locale: Locale; withHeading?: boolean }) {
+  const c = home[locale];
+  const i = inner[locale];
+  return (
+    <section className="contact" id="cita" aria-labelledby="cita-h">
+      <div className="wrap grid">
+        {withHeading ? (
+          <Lines as="h2" id="cita-h" className="contact__head head" lines={[c.contactHeading]} reveal />
+        ) : (
+          <h2 id="cita-h" className="sr-only">
+            {c.contactHeading}
+          </h2>
+        )}
+        <p className="contact__sentence" data-reveal>
+          {c.contactSentence}
+        </p>
+
+        <ContactTool
+          locale={locale}
+          topics={topicsFor(locale)}
+          barcelona={toToolOffice(offices.barcelona)}
+          roses={toToolOffice(offices.roses)}
+          whatsapp={offices.whatsapp}
+          email={offices.email}
+        />
+
+        <div className="offices">
+          <h3 className="sr-only">{i.contactOffices}</h3>
+          <div className="office" data-reveal>
+            <div className="office__photo">
+              <Photo name="eixample" locale={locale} sizes="160px" />
+            </div>
+            <div>
+              <h3>{offices.barcelona.name}</h3>
+              <address>
+                <span>{offices.barcelona.address}</span>
+                <span>
+                  {offices.barcelona.postalCode} {offices.barcelona.city}
+                </span>
+              </address>
+              <a className="link office__phone" href={`tel:${offices.barcelona.phone}`}>
+                {offices.barcelona.phoneDisplay}
+              </a>
+            </div>
+          </div>
+          <div className="office" data-reveal style={css({ "--i": 1 })}>
+            <div className="office__photo">
+              <Photo name="ciutadella" locale={locale} sizes="160px" />
+            </div>
+            <div>
+              <h3>{offices.roses.name}</h3>
+              <address>
+                <span>{offices.roses.address}</span>
+                <span>
+                  {offices.roses.postalCode} {offices.roses.city}
+                </span>
+              </address>
+              <a className="link office__phone" href={`tel:${offices.roses.phone}`}>
+                {offices.roses.phoneDisplay}
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function HomePage({ locale }: { locale: Locale }) {
+  const c = home[locale];
+  const f = firmPage[locale];
+  const n = nav[locale];
+
+  return (
+    <>
+      <section className="hero" data-hero aria-labelledby="hero-h">
+        <div className="wrap grid hero__grid">
+          <div className="hero__stage">
+            <div className="hero__title-wrap">
+              <Lines as="h1" id="hero-h" className="hero__title" lines={c.h1} load />
+            </div>
+
+            <div className="hero__talk">
+              <p className="hero__sub" data-load style={css({ "--d": "420ms" })}>
+                {c.sub}
+              </p>
+              <a className="btn" href="#cita" data-hero-action data-load style={css({ "--d": "500ms" })}>
+                {c.cta}
+              </a>
+            </div>
+
+            <div className="hero__photo">
+              <div className="hero__media">
+                <figure>
+                  <Photo name="rambla" locale={locale} sizes="(min-width: 1000px) 33vw, 50vw" preload />
+                  <figcaption className="cap">{c.captionBarcelona}</figcaption>
+                </figure>
+                <figure>
+                  <Photo name="bahia" locale={locale} sizes="(min-width: 1000px) 33vw, 50vw" preload />
+                  <figcaption className="cap">{c.captionRoses}</figcaption>
+                </figure>
+              </div>
+              <p className="hero__fact">
+                <strong>{c.factNumber}</strong>
+                <span className="small">{c.factText}</span>
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section aria-labelledby="intro-h">
+        <div className="board">
+          <div className="board__slogan on-dark" data-ink="dark" data-reveal="open">
+            <Lines as="h2" id="intro-h" className="display" lines={c.introSlogan} reveal />
+          </div>
+          <div className="board__word" data-reveal="open" style={css({ "--i": 1 })}>
+            <span className="small">{c.introWordNote}</span>
+            <span className="display">{c.introWord}</span>
+          </div>
+          <div className="board__photo" data-reveal="open" style={css({ "--i": 2 })}>
+            <Photo name="frente" locale={locale} sizes="(min-width: 1000px) 33vw, 50vw" />
+          </div>
+          <div className="board__text">
+            <p data-reveal>{c.introText}</p>
+          </div>
+        </div>
+      </section>
+
+      <section className="areas" aria-labelledby="areas-h">
+        <div className="wrap">
+          <Lines as="h2" id="areas-h" className="areas__head" lines={c.listHeading} reveal />
+          <div className="grid areas__body">
+            <div className="areas__figure" data-reveal="open">
+              <Photo name="fachada" locale={locale} sizes="(min-width: 1000px) 33vw, 100vw" />
+            </div>
+            <AreasTable locale={locale} groups={c.listGroups} />
+          </div>
+        </div>
+      </section>
+
+      <section className="steps on-dark" data-ink="dark" aria-labelledby="steps-h">
+        <div className="wrap">
+          <ol className="steps__list">
+            {c.stepsLines.map((line, i) => (
+              <li className="step" key={i}>
+                <Lines
+                  as={i === 0 ? "h2" : "p"}
+                  id={i === 0 ? "steps-h" : undefined}
+                  className="step__line"
+                  lines={[line]}
+                  reveal
+                />
+                <p className="step__text" data-reveal>
+                  {c.stepsTexts[i]}
+                </p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      <section className="about wrap grid" aria-labelledby="about-h">
+        <h2 id="about-h" className="sr-only">
+          {n.firma}
+        </h2>
+        <dl className="about__facts" data-reveal>
+          {c.aboutFacts.map((fact) => (
+            <div key={fact.label}>
+              <dt>{fact.label}</dt>
+              <dd>{fact.value}</dd>
+            </div>
+          ))}
+        </dl>
+        <p className="about__text" data-reveal style={css({ "--i": 1 })}>
+          {f.how}
+        </p>
+
+        <h3 className="about__newshead">{c.aboutNews}</h3>
+        <ul className="about__news">
+          {blogPosts.map((post, i) => (
+            <li key={post.slug} className="news-row" data-reveal="row" style={css({ "--i": i % 6 })}>
+              <span>{post.title[locale]}</span>
+              <time dateTime={post.date}>
+                {new Date(post.date).toLocaleDateString(dateLocale[locale], { year: "numeric", month: "short" })}
+              </time>
+            </li>
+          ))}
+        </ul>
+        <p className="about__more">
+          <Link className="link" href={staticPath(locale, "actualidad")}>
+            {c.aboutNewsLink}
+          </Link>
+        </p>
+      </section>
+
+      <section className="faq" aria-labelledby="faq-h">
+        <div className="faq__head on-dark" data-ink="dark">
+          <div className="wrap">
+            <Lines as="h2" id="faq-h" className="head" lines={c.faqHeading} reveal />
+          </div>
+        </div>
+        {c.faq.map((item, i) => (
+          <div className="faq__band" key={i}>
+            <div className="wrap grid">
+              <h3 className="faq__q" data-reveal>
+                {item.q}
+              </h3>
+              <p className="faq__a" data-reveal style={css({ "--i": 1 })}>
+                {item.a}
+              </p>
+            </div>
+          </div>
+        ))}
+      </section>
+
+      <ContactSection locale={locale} />
+    </>
+  );
+}
+
+function PageHero({ title, tone, sub }: { title: string; tone: 1 | 2 | 3 | 4; sub?: string }) {
+  return (
+    <section
+      className={`page-hero page-hero--${tone} ${tone === 2 ? "" : "on-dark"}`}
+      data-ink={tone === 2 ? undefined : "dark"}
+    >
+      <div className="wrap grid">
+        <Lines as="h1" className="page-hero__title head" lines={[title]} load />
+        {sub ? (
+          <p className="page-hero__sub" data-load style={css({ "--d": "450ms" })}>
+            {sub}
+          </p>
+        ) : null}
+      </div>
+    </section>
+  );
+}
+
+function CtaBand({ locale }: { locale: Locale }) {
+  const i = inner[locale];
+  return (
+    <section className="cta-band on-dark" data-ink="dark" aria-labelledby="cta-h">
+      <div className="wrap grid">
+        <h2 id="cta-h" data-reveal>
+          {i.needHelp}
+        </h2>
+        <Link className="btn btn--on-dark" href={`${staticPath(locale, "contacto")}#cita`} data-reveal style={css({ "--i": 1 })}>
+          {i.cta}
+        </Link>
+      </div>
+    </section>
   );
 }
 
 export function PracticeAreaPage({ locale, area }: { locale: Locale; area: PracticeArea }) {
-  const t = ui[locale];
+  const i = inner[locale];
+  const idx = practiceAreas.findIndex((a) => a.group === area.group);
+  const tone = ((idx % 4) + 1) as 1 | 2 | 3 | 4;
+  const [first, ...rest] = area.intro[locale];
+
   return (
-    <div>
-      <PageBanner eyebrow={t.servicesTitle} title={area.title[locale]} />
-      <div className="container-page py-14 grid lg:grid-cols-[2fr_1fr] gap-12">
-        <div>
-          <div className="prose-block space-y-5 text-[1.05rem] leading-relaxed text-ink/85">
-            {area.intro[locale].map((p, i) => (
-              <p key={i}>{p}</p>
-            ))}
-          </div>
-          <ul className="mt-8 grid sm:grid-cols-2 gap-x-8 gap-y-3">
-            {area.services[locale].map((s) => (
-              <li key={s} className="flex gap-2 text-[0.95rem]">
-                <span className="mt-2 h-1.5 w-1.5 rounded-full bg-brass shrink-0" />
-                {s}
-              </li>
-            ))}
-          </ul>
-
-          <div className="mt-10 rounded-sm border border-brass/30 bg-brass/10 p-6 sm:p-8">
-            <h2 className="font-serif text-2xl text-sea mb-2">{t.needHelp}</h2>
-            <p className="text-sm text-ink/70 mb-4 font-mono">{offices.email}</p>
-            <Link
-              href={staticPath(locale, "contacto")}
-              className="inline-flex items-center rounded-sm bg-sea px-6 py-3 text-sm font-semibold text-paper hover:bg-sea-deep transition-colors"
-            >
-              {t.contactCta}
-            </Link>
-          </div>
-        </div>
-
-        <aside>
-          <h3 className="font-mono text-xs uppercase tracking-[0.14em] text-sea mb-4">{t.servicesTitle}</h3>
-          <ul className="space-y-1 text-sm">
-            {practiceAreas.map((a) => (
-              <li key={a.group}>
-                <Link
-                  href={slugPath(locale, a.slug[locale])}
-                  className={`block py-1.5 border-b border-sea/10 ${a.group === area.group ? "text-sea font-semibold" : "text-ink/70 hover:text-sea"}`}
-                >
-                  {a.navTitle[locale]}
-                </Link>
-              </li>
-            ))}
+    <>
+      <PageHero title={areaH1[area.group]?.[locale] ?? area.title[locale]} tone={tone} />
+      <div className="wrap grid page-body">
+        <aside className="side-nav" aria-label={i.areas}>
+          <h2>{i.areas}</h2>
+          <ul>
+            {areaGroups.flat().map((g) => {
+              const a = practiceAreas.find((x) => x.group === g)!;
+              return (
+                <li key={g} data-reveal="row">
+                  <Link href={slugPath(locale, a.slug[locale])} aria-current={g === area.group ? "page" : undefined}>
+                    {areaMeta[g][locale].short}
+                  </Link>
+                </li>
+              );
+            })}
           </ul>
         </aside>
+
+        <div className="page-main">
+          <div className="prose prose--lead">
+            <p>{first}</p>
+          </div>
+          <div className="prose" data-reveal>
+            {rest.map((p, k) => (
+              <p key={k}>{p}</p>
+            ))}
+          </div>
+          <div data-reveal>
+            <h2 className="subhead">{i.whatWeDo}</h2>
+            <ul className="service-list">
+              {servicesOf(area, locale).map((s, k) => (
+                <li key={s} data-reveal="row" style={css({ "--i": k % 6 })}>
+                  {s}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
       </div>
-    </div>
+      <PhotoStrip locale={locale} set={idx} />
+      <CtaBand locale={locale} />
+    </>
   );
 }
 
 export function FirmaPage({ locale }: { locale: Locale }) {
   const c = firmPage[locale];
+  const whyParagraphs = c.why.split("\n\n");
   return (
-    <div>
-      <PageBanner eyebrow={c.kicker} title={c.title} />
-      <div className="container-page py-14 space-y-14 max-w-3xl">
-        <section>
-          <p className="font-mono text-xs font-medium tracking-[0.14em] uppercase text-brass mb-1">{c.historyKicker}</p>
-          <h2 className="font-serif text-3xl text-sea mb-4">{c.historyTitle}</h2>
-          <p className="italic text-ink/60 mb-4">{c.quote}</p>
-          <p className="leading-relaxed text-ink/85">{c.history}</p>
-        </section>
-        <section>
-          <p className="font-mono text-xs font-medium tracking-[0.14em] uppercase text-brass mb-1">{c.whyKicker}</p>
-          <h2 className="font-serif text-3xl text-sea mb-4">{c.whyTitle}</h2>
-          {c.why.split("\n\n").map((p, i) => (
-            <p key={i} className="leading-relaxed text-ink/85 mb-4">
-              {p}
+    <>
+      <PageHero title={c.title} tone={1} sub={c.kicker} />
+      <div className="wrap grid page-body">
+        <div className="side-nav" />
+        <div className="page-main">
+          <div>
+            <h2 className="subhead" data-reveal="row">
+              {c.historyTitle}
+            </h2>
+            <p className="quote" data-reveal="row" style={css({ "--i": 1 })}>
+              {c.quote}
             </p>
-          ))}
-        </section>
-        <section>
-          <p className="font-mono text-xs font-medium tracking-[0.14em] uppercase text-brass mb-1">{c.howKicker}</p>
-          <h2 className="font-serif text-3xl text-sea mb-4">{c.howTitle}</h2>
-          <p className="leading-relaxed text-ink/85">{c.how}</p>
-        </section>
+          </div>
+          <div className="prose" data-reveal>
+            <p>{c.history}</p>
+          </div>
+          <div>
+            <h2 className="subhead" data-reveal="row">
+              {c.whyTitle}
+            </h2>
+            <div className="prose">
+              {whyParagraphs.map((p, k) => (
+                <p key={k} data-reveal="row" style={css({ "--i": k + 1 })}>
+                  {p}
+                </p>
+              ))}
+            </div>
+          </div>
+          <div>
+            <h2 className="subhead" data-reveal="row">
+              {c.howTitle}
+            </h2>
+            <div className="prose">
+              <p data-reveal="row" style={css({ "--i": 1 })}>
+                {c.how}
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
+      <PhotoStrip locale={locale} set={0} />
+      <CtaBand locale={locale} />
+    </>
   );
 }
 
 export function ContactoPage({ locale }: { locale: Locale }) {
   const c = contactPage[locale];
-  const t = ui[locale];
   return (
-    <div>
-      <PageBanner eyebrow={c.kicker} title={c.title} />
-      <div className="container-page py-14 grid lg:grid-cols-[1fr_1.2fr] gap-12">
-        <div>
-          <div className="space-y-3 text-ink/80 mb-10">
-            {c.intro.map((p, i) => (
-              <p key={i}>{p}</p>
+    <>
+      <PageHero title={c.title} tone={4} />
+      <div className="wrap grid page-body">
+        <div className="side-nav" />
+        <div className="page-main">
+          <div className="prose prose--lead">
+            <p>{c.intro[0]}</p>
+          </div>
+          <div className="prose">
+            {c.intro.slice(1).map((p, k) => (
+              <p key={k} data-reveal="row" style={css({ "--i": k })}>
+                {p}
+              </p>
             ))}
           </div>
-
-          <OfficeBlock title="Barcelona" coord="41.3874°N" o={offices.barcelona} t={t} />
-          <div className="h-8" />
-          <OfficeBlock title="Roses (Girona)" coord="42.2624°N" o={offices.roses} t={t} />
         </div>
-        <ContactForm locale={locale} />
       </div>
-    </div>
-  );
-}
-
-function OfficeBlock({
-  title,
-  coord,
-  o,
-  t,
-}: {
-  title: string;
-  coord: string;
-  o: (typeof offices)["barcelona"];
-  t: (typeof ui)["es"];
-}) {
-  return (
-    <div>
-      <p className="font-mono text-xs text-brass tracking-[0.1em] mb-1">{coord}</p>
-      <h3 className="font-serif text-2xl text-sea mb-3">{title}</h3>
-      <ul className="space-y-1.5 text-sm text-ink/75">
-        <li>
-          {t.phone}: <a href={`tel:${o.phone}`} className="hover:text-sea">{o.phoneDisplay}</a>
-        </li>
-        <li>
-          {t.whatsapp}: <a href={`https://wa.me/${offices.whatsapp.replace("+", "")}`} className="hover:text-sea">{offices.whatsappDisplay}</a>
-        </li>
-        <li>
-          {t.email}: <a href={`mailto:${offices.email}`} className="hover:text-sea">{offices.email}</a>
-        </li>
-        <li>
-          {t.address}: {o.address}, {o.postalCode} {o.city}
-        </li>
-      </ul>
-    </div>
+      <ContactSection locale={locale} withHeading={false} />
+      <PhotoStrip locale={locale} set={2} />
+    </>
   );
 }
 
 export function ServiciosIndexPage({ locale }: { locale: Locale }) {
   const t = ui[locale];
+  const c = home[locale];
   return (
-    <div>
-      <PageBanner eyebrow={t.servicesTitle} title={t.servicesTitle} />
-      <div className="container-page py-14">
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {practiceAreas.map((area) => (
-            <Link
-              key={area.group}
-              href={slugPath(locale, area.slug[locale])}
-              className="rounded-sm border border-sea/10 bg-linen p-6 hover:border-brass hover:shadow-lg transition-all font-serif text-xl text-sea"
-            >
-              {area.title[locale]}
-            </Link>
-          ))}
+    <>
+      <PageHero title={t.servicesTitle} tone={3} sub={homeCopy[locale].areasSub} />
+      <div className="wrap area-index" style={{ paddingBlock: "clamp(64px, 9vw, 120px) clamp(96px, 12vw, 180px)" }}>
+        <div className="grid">
+          <AreasTable locale={locale} groups={c.listGroups} />
         </div>
       </div>
-    </div>
+      <PhotoStrip locale={locale} set={1} />
+      <CtaBand locale={locale} />
+    </>
   );
 }
 
 export function ActualidadPage({ locale }: { locale: Locale }) {
-  const t = ui[locale];
-  const eyebrow = { es: "Actualidad", ca: "Actualitat", en: "News" }[locale];
-  const heading = { es: "Nuestro blog", ca: "El nostre blog", en: "Our blog" }[locale];
-  const dateLocale = { es: "es-ES", ca: "ca-ES", en: "en-GB" }[locale];
+  const i = inner[locale];
   return (
-    <div>
-      <PageBanner eyebrow={eyebrow} title={heading} />
-      <div className="container-page py-14 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {blogPosts.map((post) => (
-          <article key={post.slug} className="rounded-sm border border-sea/10 bg-linen p-6 flex flex-col">
-            <time className="font-mono text-xs uppercase tracking-wide text-brass font-medium mb-2">
-              {new Date(post.date).toLocaleDateString(dateLocale, { year: "numeric", month: "long", day: "numeric" })}
-            </time>
-            <h2 className="font-serif text-xl text-sea mb-2">{post.title[locale]}</h2>
-            <p className="text-sm text-ink/70 flex-1">{post.excerpt[locale]}</p>
-            <span className="mt-4 text-sm font-semibold text-brass">{t.readMore} →</span>
-          </article>
-        ))}
+    <>
+      <PageHero title={i.newsTitle} tone={2} sub={i.newsNote} />
+      <div className="wrap grid page-body">
+        <div className="side-nav" />
+        <div className="page-main">
+          <div className="post-list">
+            {blogPosts.map((post, k) => (
+              <article className="post" key={post.slug} data-reveal style={css({ "--i": k % 3 })}>
+                <time dateTime={post.date}>
+                  {new Date(post.date).toLocaleDateString(dateLocale[locale], {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}
+                </time>
+                <h2>{post.title[locale]}</h2>
+                <p>{post.excerpt[locale]}</p>
+              </article>
+            ))}
+          </div>
+        </div>
       </div>
-    </div>
+      <PhotoStrip locale={locale} set={1} />
+    </>
   );
 }
 
+const privacySub: Record<Locale, string> = {
+  es: "Cómo se tratan los datos que nos facilitas.",
+  ca: "Com es tracten les dades que ens facilites.",
+  en: "How we handle the data you give us.",
+};
+
 export function PrivacidadPage({ locale }: { locale: Locale }) {
   const t = ui[locale];
-  const title = t.privacy;
   return (
-    <div>
-      <PageBanner eyebrow={title} title={title} />
-      <div className="container-page py-14 max-w-3xl text-sm leading-relaxed text-ink/75">
-        <p>
-          {
-            {
-              es: "Política de privacidad de demostración para esta previsualización. El texto legal completo y revisado se incorporará antes del lanzamiento definitivo.",
-              ca: "Política de privacitat de demostració per a aquesta previsualització. El text legal complet i revisat s'incorporarà abans del llançament definitiu.",
-              en: "Demo privacy policy for this preview. The full, reviewed legal text will be added before the final launch.",
-            }[locale]
-          }
-        </p>
+    <>
+      <PageHero title={t.privacy} tone={3} sub={privacySub[locale]} />
+      <div className="wrap grid page-body">
+        <div className="side-nav" />
+        <div className="page-main">
+          <div className="prose">
+            <p>
+              {
+                {
+                  es: "Política de privacidad de demostración para esta previsualización. El texto legal completo y revisado se incorporará antes del lanzamiento definitivo.",
+                  ca: "Política de privacitat de demostració per a aquesta previsualització. El text legal complet i revisat s'incorporarà abans del llançament definitiu.",
+                  en: "Demo privacy policy for this preview. The full, reviewed legal text will be added before the final launch.",
+                }[locale]
+              }
+            </p>
+          </div>
+        </div>
       </div>
-    </div>
+      <PhotoStrip locale={locale} set={2} />
+    </>
   );
 }
 
